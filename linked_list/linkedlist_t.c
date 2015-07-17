@@ -295,4 +295,71 @@ int linkedlist_delete_nth(struct linkedlist_t *ll, unsigned long n) {
   return 0; 
 }
 
+/*
+ * Sorts the given linked list in place using bubble sort. List can only be
+ * sorted if the compar function was initialized
+ *
+ * @param ll linked list to sort
+ *
+ */
+void linkedlist_sort(struct linkedlist_t *ll) { 
+  unsigned long n, newn, i; 
+  struct llnode_t *p, *prev, *temp;
+
+  if (ll->compar == NULL) { 
+    return;
+  } else if (ll->size < 2) { 
+    return;
+  }
+
+  n       = ll->size; 
+  while (n > 0) { 
+    newn = 0;
+    p    = ll->list;
+    prev = ll->list;
+  
+    for (i = 1; i < n && p != NULL; i++, prev = p, p = p->next) {
+      if (ll->compar(p->data, p->next->data) > 0) { 
+        temp       = p->next;
+        p->next    = p->next->next;
+        temp->next = p;
+
+        // adjust pointers to prev and head of list
+        if (p == ll->list) { 
+          ll->list = temp;
+          prev     = temp; 
+        } else { 
+          prev->next = temp; 
+        }
+        p = temp;
+        newn = i; 
+      } 
+    }
+    n = newn; 
+  }
+}
+
+/*
+ * Returns 1 if the given item is in the list, returns 0 if not. Any other value
+ * will signify an error
+ *
+ * @param ll linked list to search through
+ * @param data data to look for in the given linkedlist
+ *
+ * @return 1 if given item is in the given list, 0 if it is not. Other values
+ * will indicate an error (such as no avaialble compar function)
+ */
+int linkedlist_contains(struct linkedlist_t *ll, void *data) { 
+  struct llnode_t *p;
+
+  if (ll->compar == NULL) { 
+    return 2; 
+  }
+
+  for (p = ll->list; p != NULL; p = p->next) { 
+    if (ll->compar(p->data, data) == 0) return 1; 
+  }
+
+  return 0;
+}
 

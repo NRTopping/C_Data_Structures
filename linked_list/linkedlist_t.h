@@ -31,13 +31,10 @@ int linkedlist_delete_first(struct linkedlist_t *ll);
 int linkedlist_delete_last(struct linkedlist_t *ll); 
 int linkedlist_delete_nth(struct linkedlist_t *ll, unsigned long n); 
 
-// Sorting Functions
-void linkedlist_sort(struct linkedlist_t *ll); // TODO 
-void linkedlist_fastsort(struct linkedlist_t *ll); // TODO 
 
 // Misc Functions
-int linkedlist_size(struct linkedlist_t *ll); // TODO 
-int linkedlist_contains(struct linkedlist_t *ll, void *data);
+void linkedlist_sort(struct linkedlist_t *ll); 
+int  linkedlist_contains(struct linkedlist_t *ll, void *data);
 
 
 #endif /* LINKEDLIST_H_ */
