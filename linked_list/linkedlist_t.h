@@ -13,29 +13,31 @@ struct llnode_t {
 struct linkedlist_t { 
   struct llnode_t *list; 
   int (*compar) (const void*, const void*);
+  void (*freefunc) (void*);
   size_t size;
-  // TODO other
 };
 
 // Creation and Destruction functions
-int linkedlist_init(struct linkedlist_t **ll); // TODO add other necessary args
-int linkedlist_destroy(struct linkedlist_t **ll);
+int linkedlist_init(struct linkedlist_t *ll, int (*compar) (const void *, const void*),
+    void (*freefunc) (void*)); 
+int linkedlist_destroy(struct linkedlist_t *ll);
 
 // Insertion and Deletion Functions 
 int linkedlist_insert(struct linkedlist_t *ll, void *data);
 int linkedlist_insert_first(struct linkedlist_t *ll, void *data);
-int linkedlist_insert_last(struct linkedlist_t *ll, void *data);
 int linkedlist_insert_sorted(struct linkedlist_t *ll, void *data);
 int linkedlist_delete(struct linkedlist_t *ll, void *data);
-int linkedlist_delete_first(struct linkedlist_t *ll);
-int linkedlist_delete_last(struct linkedlist_t *ll);
-int linkedlist_delete_nth(struct linkedlist_t *ll, int n);
+int linkedlist_delete_first(struct linkedlist_t *ll); 
+int linkedlist_delete_last(struct linkedlist_t *ll); 
+int linkedlist_delete_nth(struct linkedlist_t *ll, unsigned long n); 
 
 // Sorting Functions
-void linkedlist_sort(struct linkedlist_t *ll);
-void linkedlist_fastsort(struct linkedlist_t *ll);
+void linkedlist_sort(struct linkedlist_t *ll); // TODO 
+void linkedlist_fastsort(struct linkedlist_t *ll); // TODO 
 
 // Misc Functions
-int linkedlist_size(struct linkedlist_t *ll);
+int linkedlist_size(struct linkedlist_t *ll); // TODO 
+int linkedlist_contains(struct linkedlist_t *ll, void *data);
+
 
 #endif /* LINKEDLIST_H_ */
