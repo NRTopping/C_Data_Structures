@@ -23,7 +23,6 @@ void nds_list_remove(nds_list_t l, nds_lnode_t node);
 void nds_list_search(nds_list_t l, const nds_compar_func_t comp_f, void *value); 
 void nds_list_write(nds_list_t l); 
 void nds_list_read(nds_list_t l); 
-void nds_list_dump(nds_list_t l); 
 
 
 
