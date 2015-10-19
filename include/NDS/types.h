@@ -97,13 +97,15 @@ typedef nds_element_t(* nds_read_func_t)(FILE *fp);
 /**
  *  @brief NDS Map Element Function Type.
  *
- *  This function type is for ampping an nds_element_t variable from an NDS data
+ *  This function type is for mapping an nds_element_t variable from an NDS data
  *  structure. 
  *
  *  @param e the mapped nds_element_t value
+ *  @param user_data optional data to either map to e, or to use for
+ *  calculations
  *  @return NDS_MAP_STOP if the mapping function should stop
  *  @return NDS_MAP_CONT if the mapping function should continue
  */
-typedef int (* nds_map_func_t)(const nds_element_t e);
+typedef int (* nds_map_func_t)(const nds_element_t e, void *user_data);
 
 #endif /* NDS_GENERAL_H_ */
