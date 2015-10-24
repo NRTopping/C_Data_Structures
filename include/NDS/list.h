@@ -8,10 +8,10 @@
 #include <stdbool.h>
 
 typedef struct nds_list { 
-  nds_lnode_t   head; // begining of list
-  nds_lnode_t   tail;  // end of list 
-  unsigned long size; // size of the list 
-  char         *id;   // optional identifier for the list
+  nds_lnode_t beg;  // begining of list
+  nds_lnode_t end;  // end of list 
+  nds_size    size; // size of the list 
+  //char         *id;   // optional identifier for the list
 
   nds_alloc_func_t  alloc_func;  // element allocator for the list
   nds_free_func_t   free_func;   // element deallocater for the list
@@ -26,25 +26,63 @@ typedef struct nds_list {
  *
  * @param alloc_func function used to allocate nds_element_t values in the list
  * @param free_func function used to deallocate nds_element_t values in the list
- * @param compar_func function used to compare nds_element_t values in the list
  * @return an allocated nds_list_t that will need to be freed with nds_list_free
  * on success
  * @return NULL on failure (run out of memory)
  */
 extern nds_list_t nds_list_alloc(const nds_alloc_func_t alloc_func, 
     const nds_free_func_t free_func);
-void nds_list_free(nds_list_t list, const nds_free_func_t free_f);
-bool nds_list_is_empty(const nds_list_t list);
-unsigned long nds_list_size(const nds_list_t list);
-void nds_list_link(nds_list_t l1, nds_list_t l2); 
-void nds_list_insert_after(nds_list_t l1, nds_list_t l2);
-void nds_list_insert_before(nds_list_t l1, nds_list_t l2); 
-void nds_list_remove(nds_list_t l, nds_lnode_t node); 
-void nds_list_search(nds_list_t l, const nds_compar_func_t comp_f, void *value); 
-void nds_list_write(nds_list_t l); 
-void nds_list_read(nds_list_t l); 
 
-// TODO sort function
+/**
+ * @brief Frees NDS List
+ *
+ * Frees a list allocated with nds_list_alloc. Will also free all data contained
+ * within the list (does so by calling nds_list_flush). 
+ *
+ * @param list the nds_list_t list to free. Shoulbe be non-null. 
+ * @return void
+ */
+extern void nds_list_free(nds_list_t list);
+
+/**
+ * @brief Flush Data in NDS List
+ *
+ * This function frees any data that was added to the given nds_list_t after it
+ * was allocated. This function will not free the structure of the list itself -
+ * only the data.
+ *
+ * @pre list should be non-null
+ * @param list the list to flush
+ * @return void
+ */
+extern void nds_list_flush(nds_list_t list); 
+
+extern bool nds_list_is_empty(const nds_list_t list);
+extern nds_size nds_list_size(const nds_list_t list);
+extern nds_element_t nds_list_get_head(const nds_list_t list); 
+extern nds_element_t nds_list_get_tail(const nds_list_t list); 
+extern nds_element_t nds_list_insert_head(const nds_list_t list); 
+extern nds_element_t nds_list_insert_tail(const nds_list_t list); 
+extern nds_element_t nds_list_remove_head(const nds_list_t list); 
+extern nds_element_t nds_list_remove_tail(const nds_list_t list); 
+extern nds_element_t nds_list_remove(const nds_list_t list, 
+    const nds_compar_func_t compar_func, const nds_element_t element);
+extern void nds_list_delete_head(const nds_list_t list); 
+extern void nds_list_delete_tail(const nds_list_t list); 
+extern void nds_list_delete(const nds_list_t list, 
+    const nds_compar_func_t compar_func, const nds_element_t element); 
+extern nds_element_t nds_list_search(const nds_list_t list, 
+    const nds_compar_func_t compar_func, const nds_element_t element);
+extern void nds_list_sort(const nds_list_t list, 
+    const nds_compar_func_t compar_func); 
+extern nds_list_t nds_list_join(nds_list_t l1, nds_list_t l2);
+extern nds_element_t nds_list_map_forward(const nds_list_t list, 
+    const nds_map_func_t map_func, void *user_data);
+extern nds_element_t nds_list_map_backward(const nds_list_t list, 
+    const nds_map_func_t map_func, void *user_data);
+extern void nds_list_write(nds_list_t l, const nds_write_func_t write_func, FILE *fp); 
+extern nds_list_t nds_list_read(const nds_read_func_t read_func, FILE *fp); 
+
 // TODO iterator functions (own file?)
 // TODO merge function
 // TODO default free and alloc functions for data

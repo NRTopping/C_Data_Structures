@@ -58,6 +58,12 @@ extern void nds_lnode_set_prev(nds_lnode_t node, nds_lnode_t prev) {
   node->prev = prev; 
 }
 
+extern void nds_lnode_set_data(nds_lnode_t node, ndes_element_t data) { 
+  assert(node != NULL); 
+
+  node->data = data;
+}
+
 extern void nds_lnode_link(nds_lnode_t n1, nds_lnode_t n2) { 
   assert(n1 != NULL && n2 != NULL); 
 

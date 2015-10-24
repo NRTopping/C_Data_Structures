@@ -11,6 +11,8 @@
  */
 typedef void* nds_element_t; 
 
+typedef unsigned long nds_size; 
+
 /**
  * @brief NDS constants
  */

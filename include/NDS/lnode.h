@@ -95,6 +95,18 @@ extern void nds_lnode_set_next(nds_lnode_t node, nds_lnode_t next);
 extern void nds_lnode_set_prev(nds_lnode_t node, nds_lnode_t prev); 
 
 /**
+ * @brief Set the NDS List Node's Data
+ *
+ * Sets the data contained within the given node
+ *
+ * @pre node must be non-null
+ * @param node the nds_lnode_t to set/change data 
+ * @param data data to put into node
+ * @return void
+ */
+extern void nds_lnode_set_data(nds_lnode_t node, nds_element_t data); 
+
+/**
  * @brief Link Two NDS List Node's Together
  *
  * Sets n1's next value to n2, and n2's previous value to n1
