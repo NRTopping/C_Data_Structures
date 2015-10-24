@@ -9,18 +9,30 @@
 
 typedef struct nds_list { 
   nds_lnode_t   head; // begining of list
-  nds_lnode_t   end;  // end of list 
+  nds_lnode_t   tail;  // end of list 
   unsigned long size; // size of the list 
   char         *id;   // optional identifier for the list
 
   nds_alloc_func_t  alloc_func;  // element allocator for the list
   nds_free_func_t   free_func;   // element deallocater for the list
-  nds_compar_func_t compar_func; // element comparison function for the list
-  nds_write_func_t  write_func;  // element write function for the list 
-  nds_read_func_t   read_func;   // element read function for the list
 } *nds_list_t; 
 
-nds_list_t nds_list_alloc(const nds_element_t element);
+/**
+ * @brief Create NDS List
+ *
+ * Allocates memory needed for an nds_list_t. Initializes function fields to the
+ * given values. If a null value is passed in for a necessary function, the
+ * default function will be used. 
+ *
+ * @param alloc_func function used to allocate nds_element_t values in the list
+ * @param free_func function used to deallocate nds_element_t values in the list
+ * @param compar_func function used to compare nds_element_t values in the list
+ * @return an allocated nds_list_t that will need to be freed with nds_list_free
+ * on success
+ * @return NULL on failure (run out of memory)
+ */
+extern nds_list_t nds_list_alloc(const nds_alloc_func_t alloc_func, 
+    const nds_free_func_t free_func);
 void nds_list_free(nds_list_t list, const nds_free_func_t free_f);
 bool nds_list_is_empty(const nds_list_t list);
 unsigned long nds_list_size(const nds_list_t list);
