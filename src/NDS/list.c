@@ -67,9 +67,20 @@ extern void nds_list_flush(nds_list_t list) {
 }
 
 extern bool nds_list_is_empty(const nds_list_t list) { 
-  return (list->size == 0); 
+  return (nds_list_size(list) == 0); 
 }
 
 extern nds_size nds_list_size(const nds_list_t list) { 
+  assert(list != NULL);
   return list->size; 
+}
+
+extern nds_element_t nds_list_get_head(const nds_list_t list) {
+  assert(list != NULL);
+  return nds_lnode_get_data(nds_lnode_get_next(list->beg));
+}
+
+extern nds_element_t nds_list_get_tail(const nds_list_t list) { 
+  assert(list != NULL);   
+  return nds_lnode_get_data(nds_lnode_get_prev(list->end));
 }

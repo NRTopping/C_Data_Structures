@@ -57,9 +57,52 @@ extern void nds_list_free(nds_list_t list);
  */
 extern void nds_list_flush(nds_list_t list); 
 
+/**
+ * @brief See if List is Empty
+ *
+ * This function checks to see whether or not the size (from nds_list_size) is
+ * equivalent to 0. If so this function returns true, otherwise it returns
+ * false.
+ *
+ * @pre list should be initialized, and non-null
+ * @param list the list to check for emptiness 
+ * @return true if list is empty, false if not
+ */
 extern bool nds_list_is_empty(const nds_list_t list);
+
+/**
+ * @brief Get Size of List
+ *
+ * This function returns the current size of the list 
+ *
+ * @pre list should be non-null and initialized
+ * @param list the list to get the size of
+ * @return an nds_size value indicating the size of the list
+ */
 extern nds_size nds_list_size(const nds_list_t list);
+
+/**
+ * @brief Get the First Element of List
+ *
+ * This function returns the first element in the list. If there are no elements
+ * in the list, null will be returned.
+ *
+ * @pre list is initialized and non-null
+ * @param list the list to get the first element from 
+ * @return the value of the first element, otherwise it returns null
+ */
 extern nds_element_t nds_list_get_head(const nds_list_t list); 
+
+/**
+ * @brief Get the Last Element of List
+ *
+ * This function returns the last element in the list. If there are no elements
+ * in the list, null will be returned. 
+ *
+ * @pre list is initialized and non-null
+ * @param list the list to get the last element from 
+ * @return the value of the first element, otherwise it returns null
+ */
 extern nds_element_t nds_list_get_tail(const nds_list_t list); 
 extern nds_element_t nds_list_insert_head(const nds_list_t list); 
 extern nds_element_t nds_list_insert_tail(const nds_list_t list); 
@@ -86,6 +129,5 @@ extern nds_list_t nds_list_read(const nds_read_func_t read_func, FILE *fp);
 // TODO iterator functions (own file?)
 // TODO merge function
 // TODO default free and alloc functions for data
-
 
 #endif /* NDS_LIST_H_ */
