@@ -84,3 +84,24 @@ extern nds_element_t nds_list_get_tail(const nds_list_t list) {
   assert(list != NULL);   
   return nds_lnode_get_data(nds_lnode_get_prev(list->end));
 }
+
+extern void nds_list_insert_head(const nds_list_t list, 
+    const nds_element_t data) { 
+  assert(list != NULL); 
+  nds_lnode_t next = nds_lnode_get_next(list->beg), 
+              newN = nds_lnode_alloc(); 
+
+  nds_lnode_set_data(newN, data);
+  nds_lnode_link(list->beg, newN);
+  nds_lnode_link(newN, next);
+} 
+
+extern void nds_list_insert_tail(const nds_list_t list,
+    const nds_element_t data) { 
+  assert(list != NULL);
+  nds_lnode_t prev = nds_lnode_get_prev(list->end),
+              newN = nds_lnode_alloc();
+  nds_lnode_set_data(newN, data); 
+  nds_lnode_link(prev, newN);
+  nds_lnode_link(newN, list->end);
+}

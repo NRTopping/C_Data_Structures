@@ -1,4 +1,5 @@
 #ifndef NDS_LNODE_H_
+
 #define NDS_LNODE_H_
 
 #include <stdlib.h>

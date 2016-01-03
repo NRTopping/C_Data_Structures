@@ -104,8 +104,30 @@ extern nds_element_t nds_list_get_head(const nds_list_t list);
  * @return the value of the first element, otherwise it returns null
  */
 extern nds_element_t nds_list_get_tail(const nds_list_t list); 
-extern nds_element_t nds_list_insert_head(const nds_list_t list); 
-extern nds_element_t nds_list_insert_tail(const nds_list_t list); 
+
+/**
+ * @brief Insert Element at Begining of List
+ *
+ * This function inserts a new piece of data at the begining of the list. 
+ *
+ * @pre list should be initialized and non-null
+ * @param list the list to insert an element into
+ * @param data data to insert into list
+ * @return void
+ */
+extern void nds_list_insert_head(const nds_list_t list, const nds_element_t data); 
+
+/**
+ * @brief Insert Element at the End of List
+ *
+ * This function inserts a new data item at the end of the list.
+ *
+ * @pre list should be initialized and non-null
+ * @param list the list to insert data into
+ * @param data data to isnert into list
+ * @return void
+ */
+extern void nds_list_insert_tail(const nds_list_t list, const nds_element_t data); 
 extern nds_element_t nds_list_remove_head(const nds_list_t list); 
 extern nds_element_t nds_list_remove_tail(const nds_list_t list); 
 extern nds_element_t nds_list_remove(const nds_list_t list, 
