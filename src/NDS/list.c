@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/***********************************************************
+ * Private functions. Not to be used outside of this file. *
+ ***********************************************************/
+
 static nds_element_t default_alloc(void *e) { 
   return (nds_element_t) e; 
 }
@@ -10,6 +14,23 @@ static nds_element_t default_alloc(void *e) {
 static void default_free(nds_element_t e) {
   (void)(e);
 }
+
+static nds_lnode_t _nds_list_search_node(const nds_list_t list, 
+    const nds_compar_func_t comparFunc, const nds_element_t element) { 
+  assert(list != NULL && comparFunc != NULL); 
+  nds_lnode_t curr; 
+
+  for (curr = nds_lnode_get_next(list->beg); curr != NULL && curr != list->end; 
+       curr = nds_lnode_get_next(curr)) { 
+    if (comparFunc(nds_lnode_get_data(curr), element)) return curr;  
+  }
+
+  return NULL;
+}
+
+/****************************
+ * End of Private functions *
+ ****************************/
 
 extern nds_list_t nds_list_alloc(const nds_alloc_func_t alloc_func, 
     const nds_free_func_t free_func) { 
@@ -136,9 +157,9 @@ extern nds_element_t nds_list_remove_tail(const nds_list_t list) {
 }
 
 extern nds_element_t nds_list_remove(const nds_list_t list, 
-    const nds_compar_func_t compar_func, const nds_element_t element) { 
-  // TODO
-  compar_func(list->beg, element);
+    const nds_compar_func_t comparFunc, const nds_element_t element) { 
+  const nds_lnode_t node = _nds_list_search_node(list, comparFunc, element);
+  if (node != NULL) return nds_lnode_get_data(node);
   return NULL;
 }
 
@@ -157,9 +178,28 @@ extern void nds_list_delete_tail(const nds_list_t list) {
 }
 
 extern void nds_list_delete(const nds_list_t list, 
-    const nds_compar_func_t compar_func, const nds_element_t element) { 
+    const nds_compar_func_t comparFunc, const nds_element_t element) { 
   assert(list != NULL && list->free_func != NULL);
-  const nds_element_t val = nds_list_remove(list, compar_func, element); 
+  const nds_element_t val = nds_list_remove(list, comparFunc, element); 
 
   if (val != NULL) list->free_func(val);
 }
+
+extern nds_element_t nds_list_search(const nds_list_t list, 
+    const nds_compar_func_t comparFunc, const nds_element_t element) { 
+  assert(list != NULL);
+  const nds_lnode_t node = _nds_list_search_node(list, comparFunc, element); 
+
+  if (node != NULL) return nds_lnode_get_data(node); 
+  return NULL;
+}
+
+extern bool nds_list_contains(const nds_list_t list, 
+    const nds_compar_func_t comparFunc, const nds_element_t element) { 
+  assert(list != NULL);
+  const nds_lnode_t node = _nds_list_search_node(list, comparFunc, element); 
+
+  return node != NULL;
+}
+
+

@@ -160,15 +160,15 @@ extern nds_element_t nds_list_remove_tail(const nds_list_t list);
  * without freeing the data itself. Will return null if no data is currently
  * stored in the list, or if the value was not found.
  *
- * @pre list should be initialized and non-null. compar_func should be non-null
+ * @pre list should be initialized and non-null. comparFunc should be non-null
  * @param list the list to search through
- * @param compar_func function used to compare elements in the list to eachother
+ * @param comparFunc function used to compare elements in the list to eachother
  * @param element the element to remove from the list. Can be null
  * @return the element that was removed from the list, or NULL if no value
  * found.
  */
 extern nds_element_t nds_list_remove(const nds_list_t list, 
-    const nds_compar_func_t compar_func, const nds_element_t element);
+    const nds_compar_func_t comparFunc, const nds_element_t element);
 
 /**
  * @brief Delete First Element in List
@@ -205,18 +205,54 @@ extern void nds_list_delete_tail(const nds_list_t list);
  * @pre list should be non-null and initialized. list should have been
  * initialized with a free_func that corresponds to the data stored in the list
  * @param list the list to delete the element from
- * @param compar_func comparison function used to compare elements in the list
+ * @param comparFunc comparison function used to compare elements in the list
  * to eachother
- * @param element the element to find in the list, can be null if compar_func
+ * @param element the element to find in the list, can be null if comparFunc
  * uses other means to find element.
  * @return void
  */
 extern void nds_list_delete(const nds_list_t list, 
-    const nds_compar_func_t compar_func, const nds_element_t element); 
+    const nds_compar_func_t comparFunc, const nds_element_t element); 
+
+/**
+ * @brief Searches for Element in the List 
+ *
+ * This function searches the list to see if the element given is in the
+ * function. Essentially comparable to nds_list_contains, but returns NULL or
+ * the value rather than a boolean. 
+ *
+ * @pre list should be non-null and initialized. 
+ * @param list the list to search
+ * @param comparFunc the function used to compare two nds_element_t's in list
+ * together
+ * @param element the element to search for
+ * @return a pointer to the first instance of the data on success, NULL on
+ * failure.
+ */
 extern nds_element_t nds_list_search(const nds_list_t list, 
-    const nds_compar_func_t compar_func, const nds_element_t element);
+    const nds_compar_func_t comparFunc, const nds_element_t element);
+
+extern nds_element_t nds_list_search_min(const nds_list_t list,
+    const nds_compar_func_t comparFunc);
+extern nds_element_t nds_list_search_max(const nds_list_t list, 
+    const nds_compar_func_t comparFunc);
+/**
+ * @brief Determines if Given Element in List
+ *
+ * This function searches the list for the given element. If the list contains
+ * at least one instance of the given element, then this function will return
+ * true. Otherwise this function will return false.
+ *
+ * @pre list should be non-null and initialized 
+ * @param list the list to search
+ * @param comparFunc the function used to compare two nds_element_t values in
+ * the list together
+ * @param element the element to search for
+ */
+extern bool nds_list_contains(const nds_list_t list, 
+    const nds_compar_func_t comparFunc, const nds_element_t element);
 extern void nds_list_sort(const nds_list_t list, 
-    const nds_compar_func_t compar_func); 
+    const nds_compar_func_t comparFunc); 
 extern nds_list_t nds_list_join(nds_list_t l1, nds_list_t l2);
 extern nds_element_t nds_list_map_forward(const nds_list_t list, 
     const nds_map_func_t map_func, void *user_data);
