@@ -2,11 +2,16 @@
 #include "../../include/NDS/lnode.h"
 #include <assert.h>
 
+struct _nds_lnode {
+  struct nds_lnode *next;
+  struct nds_lnode *prev;
+  nds_element_t    *data;
+};
 
 extern nds_lnode_t nds_lnode_alloc() {
   nds_lnode_t node;
   
-  node = (nds_lnode_t) malloc(sizeof(struct nds_lnode));
+  node = (nds_lnode_t) malloc(sizeof(struct _nds_lnode));
 
   if (node == NULL) return NULL; 
 

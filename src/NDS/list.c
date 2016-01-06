@@ -3,6 +3,17 @@
 #include <stdlib.h>
 #include <assert.h>
 
+
+struct _nds_list { 
+  nds_lnode_t beg;  // begining of list
+  nds_lnode_t end;  // end of list 
+  nds_size    size; // size of the list 
+  //char         *id;   // optional identifier for the list
+
+  nds_alloc_func_t  alloc_func;  // element allocator for the list
+  nds_free_func_t   free_func;   // element deallocater for the list
+}; 
+
 /***********************************************************
  * Private functions. Not to be used outside of this file. *
  ***********************************************************/
@@ -36,7 +47,7 @@ extern nds_list_t nds_list_alloc(const nds_alloc_func_t alloc_func,
     const nds_free_func_t free_func) { 
   nds_list_t list; 
   
-  list = (nds_list_t) malloc(sizeof(struct nds_list));
+  list = (nds_list_t) malloc(sizeof(struct _nds_list));
 
   if (list == NULL) return NULL; 
 
@@ -106,6 +117,38 @@ extern nds_element_t nds_list_get_tail(const nds_list_t list) {
   return nds_lnode_get_data(nds_lnode_get_prev(list->end));
 }
 
+extern nds_element_t nds_list_get_min(const nds_list_t list, 
+    const nds_compar_func_t comparFunc) { 
+  assert(list != NULL && comparFunc != NULL);
+  nds_lnode_t curr; 
+  nds_element_t ret = nds_list_get_head(list);
+
+  for (curr = nds_lnode_get_next(list->beg); curr != NULL && curr != list->end; 
+       curr = nds_lnode_get_next(curr)) { 
+    const nds_element_t currData = nds_lnode_get_data(curr);
+
+    if (comparFunc(currData, ret) < 0) ret = currData;
+  }
+
+  return ret;
+}
+
+extern nds_element_t nds_list_get_max(const nds_list_t list, 
+    const nds_compar_func_t comparFunc) { 
+  assert(list != NULL && comparFunc != NULL);
+  nds_lnode_t curr; 
+  nds_element_t ret = nds_list_get_head(list);
+
+  for (curr = nds_lnode_get_next(list->beg); curr != NULL && curr != list->end;
+       curr = nds_lnode_get_next(curr)) { 
+    const nds_element_t currData = nds_lnode_get_data(curr);
+
+    if (comparFunc(currData, ret) > 0) ret = currData;
+  }
+
+  return ret;
+}
+
 extern void nds_list_insert_head(const nds_list_t list, 
     const nds_element_t data) { 
   assert(list != NULL); 
@@ -115,6 +158,7 @@ extern void nds_list_insert_head(const nds_list_t list,
   nds_lnode_set_data(newN, data);
   nds_lnode_link(list->beg, newN);
   nds_lnode_link(newN, next);
+  list->size++;
 } 
 
 extern void nds_list_insert_tail(const nds_list_t list,
@@ -125,6 +169,12 @@ extern void nds_list_insert_tail(const nds_list_t list,
   nds_lnode_set_data(newN, data); 
   nds_lnode_link(prev, newN);
   nds_lnode_link(newN, list->end);
+  list->size++;
+}
+
+extern void nds_list_insert_sorted(const nds_list_t list, 
+    const nds_compar_func_t comparFunc, const nds_element_t data) { 
+  // TODO   
 }
 
 extern nds_element_t nds_list_remove_head(const nds_list_t list) { 
@@ -138,7 +188,7 @@ extern nds_element_t nds_list_remove_head(const nds_list_t list) {
 
   nds_lnode_link(list->beg, newHead); 
   nds_lnode_free(head);
-
+  list->size--;
   return ret;
 }
 
@@ -152,14 +202,17 @@ extern nds_element_t nds_list_remove_tail(const nds_list_t list) {
 
   nds_lnode_link(newTail, list->end);
   nds_lnode_free(tail);
-
+  list->size--;
   return ret;
 }
 
 extern nds_element_t nds_list_remove(const nds_list_t list, 
     const nds_compar_func_t comparFunc, const nds_element_t element) { 
   const nds_lnode_t node = _nds_list_search_node(list, comparFunc, element);
-  if (node != NULL) return nds_lnode_get_data(node);
+  if (node != NULL) {
+    list->size--;
+    return nds_lnode_get_data(node);
+  }
   return NULL;
 }
 
@@ -179,19 +232,10 @@ extern void nds_list_delete_tail(const nds_list_t list) {
 
 extern void nds_list_delete(const nds_list_t list, 
     const nds_compar_func_t comparFunc, const nds_element_t element) { 
-  assert(list != NULL && list->free_func != NULL);
+  assert(list != NULL && list->free_func != NULL && comparFunc != NULL);
   const nds_element_t val = nds_list_remove(list, comparFunc, element); 
 
   if (val != NULL) list->free_func(val);
-}
-
-extern nds_element_t nds_list_search(const nds_list_t list, 
-    const nds_compar_func_t comparFunc, const nds_element_t element) { 
-  assert(list != NULL);
-  const nds_lnode_t node = _nds_list_search_node(list, comparFunc, element); 
-
-  if (node != NULL) return nds_lnode_get_data(node); 
-  return NULL;
 }
 
 extern bool nds_list_contains(const nds_list_t list, 
@@ -202,4 +246,16 @@ extern bool nds_list_contains(const nds_list_t list,
   return node != NULL;
 }
 
+extern void nds_list_reverse(const nds_list_t list) { 
+  assert(list != NULL);
+  nds_lnode_t curr, temp; 
+  for (curr = list->beg; curr != NULL; curr = nds_lnode_get_prev(curr)) { 
+    temp = nds_lnode_get_next(curr);
+    nds_lnode_set_next(curr, nds_lnode_get_prev(curr));
+    nds_lnode_set_prev(curr, temp);
+  }
 
+  temp = list->beg;
+  list->beg = list->end;
+  list->end = temp;
+}

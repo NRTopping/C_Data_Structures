@@ -7,11 +7,7 @@
 //#include <NDS/types.h>
 #include "types.h"
 
-typedef struct nds_lnode {
-  struct nds_lnode *next;
-  struct nds_lnode *prev;
-  nds_element_t    *data;
-} *nds_lnode_t;
+typedef struct _nds_lnode *nds_lnode_t;
 
 /**
  * @brief Create NDS List Node. 

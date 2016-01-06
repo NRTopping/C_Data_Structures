@@ -7,15 +7,7 @@
 #include "lnode.h"
 #include <stdbool.h>
 
-typedef struct nds_list { 
-  nds_lnode_t beg;  // begining of list
-  nds_lnode_t end;  // end of list 
-  nds_size    size; // size of the list 
-  //char         *id;   // optional identifier for the list
-
-  nds_alloc_func_t  alloc_func;  // element allocator for the list
-  nds_free_func_t   free_func;   // element deallocater for the list
-} *nds_list_t; 
+typedef struct _nds_list *nds_list_t;
 
 /**
  * @brief Create NDS List
@@ -106,6 +98,34 @@ extern nds_element_t nds_list_get_head(const nds_list_t list);
 extern nds_element_t nds_list_get_tail(const nds_list_t list); 
 
 /**
+ * @brief Searches List for the Smallest Element
+ *
+ * This function iterates through the list and returns the smallest element in
+ * the list. 
+ *
+ * @pre list should be initialized an non-null, comparFunc should be non-null
+ * @param list the list to get the min value from
+ * @param comparFunc function used to compare elements in the given list
+ * @return the smallest element in the list (nds_element_t)
+ */
+extern nds_element_t nds_list_get_min(const nds_list_t list,
+    const nds_compar_func_t comparFunc);
+
+/**
+ * @brief Searches List for the Largest Element
+ *
+ * This function iterates through the list and returns the largest element in
+ * the list. 
+ *
+ * @pre list should be initialized an non-null, comparFunc should be non-null
+ * @param list the list to get the min value from
+ * @param comparFunc function used to compare elements in the given list
+ * @return the largest element in the list (nds_element_t)
+ */
+extern nds_element_t nds_list_get_max(const nds_list_t list, 
+    const nds_compar_func_t comparFunc);
+
+/**
  * @brief Insert Element at Begining of List
  *
  * This function inserts a new piece of data at the begining of the list. 
@@ -128,6 +148,10 @@ extern void nds_list_insert_head(const nds_list_t list, const nds_element_t data
  * @return void
  */
 extern void nds_list_insert_tail(const nds_list_t list, const nds_element_t data); 
+
+// TODO 
+extern void nds_list_insert_sorted(const nds_list_t list, 
+    const nds_compar_func_t comparFunc, const nds_element_t data);
 
 /**
  * @brief Remove Element from Beginning of List
@@ -215,33 +239,11 @@ extern void nds_list_delete(const nds_list_t list,
     const nds_compar_func_t comparFunc, const nds_element_t element); 
 
 /**
- * @brief Searches for Element in the List 
- *
- * This function searches the list to see if the element given is in the
- * function. Essentially comparable to nds_list_contains, but returns NULL or
- * the value rather than a boolean. 
- *
- * @pre list should be non-null and initialized. 
- * @param list the list to search
- * @param comparFunc the function used to compare two nds_element_t's in list
- * together
- * @param element the element to search for
- * @return a pointer to the first instance of the data on success, NULL on
- * failure.
- */
-extern nds_element_t nds_list_search(const nds_list_t list, 
-    const nds_compar_func_t comparFunc, const nds_element_t element);
-
-extern nds_element_t nds_list_search_min(const nds_list_t list,
-    const nds_compar_func_t comparFunc);
-extern nds_element_t nds_list_search_max(const nds_list_t list, 
-    const nds_compar_func_t comparFunc);
-/**
  * @brief Determines if Given Element in List
  *
  * This function searches the list for the given element. If the list contains
  * at least one instance of the given element, then this function will return
- * true. Otherwise this function will return false.
+ * true. Otherwise this function will return false. Runs in O(n) time.
  *
  * @pre list should be non-null and initialized 
  * @param list the list to search
@@ -251,6 +253,18 @@ extern nds_element_t nds_list_search_max(const nds_list_t list,
  */
 extern bool nds_list_contains(const nds_list_t list, 
     const nds_compar_func_t comparFunc, const nds_element_t element);
+
+/**
+ * @brief Reverse given list
+ *
+ * This function revereses the given list. Does not require any extra memory,
+ * runs in O(n) time. 
+ *
+ * @pre list is non-null and initalized
+ * @param list the list to reverse
+ * @return void
+ */
+extern void nds_list_reverse(const nds_list_t list);
 extern void nds_list_sort(const nds_list_t list, 
     const nds_compar_func_t comparFunc); 
 extern nds_list_t nds_list_join(nds_list_t l1, nds_list_t l2);
