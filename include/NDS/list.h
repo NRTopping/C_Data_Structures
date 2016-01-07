@@ -126,6 +126,19 @@ extern nds_element_t nds_list_get_max(const nds_list_t list,
     const nds_compar_func_t comparFunc);
 
 /**
+ * @brief Get Nth Element in the List
+ * 
+ * this function returns the nth element in the list, where n is zero-based.
+ *
+ * @pre list must be non-null and initialized, n must be between 0 and
+ * list->size -1
+ * @param list the list to get an element from
+ * @param n index in list, must be between 0 and list->size-1 inclusive
+ * @return the element at position n on success, NULL on failure.
+ */
+extern nds_element_t nds_list_get_nth(const nds_list_t list, const int n);
+
+/**
  * @brief Insert Element at Begining of List
  *
  * This function inserts a new piece of data at the begining of the list. 
@@ -149,7 +162,18 @@ extern void nds_list_insert_head(const nds_list_t list, const nds_element_t data
  */
 extern void nds_list_insert_tail(const nds_list_t list, const nds_element_t data); 
 
-// TODO 
+/**
+ * @brief Insert Element into List in Sorted Order
+ *
+ * This function inserts the given element into the list in sorted order. This
+ * function takes O(n) time to run. 
+ *
+ * @pre list should be initialized and non-null, comparFunc should be non-null
+ * @param list the list to insert data into
+ * @param comparFunc function used to compare nds_element_t values in list
+ * @param data the data to insert into the list
+ * @return void
+ */
 extern void nds_list_insert_sorted(const nds_list_t list, 
     const nds_compar_func_t comparFunc, const nds_element_t data);
 

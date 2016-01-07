@@ -149,6 +149,18 @@ extern nds_element_t nds_list_get_max(const nds_list_t list,
   return ret;
 }
 
+extern nds_element_t nds_list_get_nth(const nds_list_t list, const int n) { 
+  assert(list != NULL && (n >= 0 && n < nds_list_size(list)));
+  nds_lnode_t curr; 
+  int i;
+  
+  for (curr = nds_lnode_get_next(list->beg), i = 0; 
+       curr != list->end && curr != NULL && i < n;
+       curr = nds_lnode_get_next(curr), i++);
+
+  return nds_lnode_get_data(curr); 
+}
+
 extern void nds_list_insert_head(const nds_list_t list, 
     const nds_element_t data) { 
   assert(list != NULL); 
@@ -174,7 +186,19 @@ extern void nds_list_insert_tail(const nds_list_t list,
 
 extern void nds_list_insert_sorted(const nds_list_t list, 
     const nds_compar_func_t comparFunc, const nds_element_t data) { 
-  // TODO   
+  assert(list != NULL && comparFunc != NULL); 
+  nds_lnode_t curr, prev; 
+  nds_lnode_t newNode = nds_lnode_alloc();
+  assert(newNode != NULL);
+  nds_lnode_set_data(newNode, data);
+
+  for (curr = nds_lnode_get_next(list->beg); 
+       curr != list->end && curr != NULL && comparFunc(data, nds_lnode_get_data(curr)) > 0;
+       curr = nds_lnode_get_next(curr));
+
+  prev = nds_lnode_get_prev(curr);
+  nds_lnode_link(prev, newNode);
+  nds_lnode_link(newNode, curr);
 }
 
 extern nds_element_t nds_list_remove_head(const nds_list_t list) { 
