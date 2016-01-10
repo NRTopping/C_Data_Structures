@@ -26,7 +26,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
 endif()
 if (NOT CONFIGURED_ONCE)
   set(CMAKE_C_FLAGS "${warnings}"
-      CACHE STRING "Flags uused by the compiler during all build types." FORCE)
+      CACHE STRING "Flags used by the compiler during all build types." FORCE)
 endif()
 
 # Add Header Files
@@ -34,8 +34,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Add Source Files
 add_subdirectory(src/NDS)
-
-add_library(nds SHARED )
 
 # Add Test
 add_test(NDSTest )
