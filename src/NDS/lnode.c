@@ -3,9 +3,9 @@
 #include <assert.h>
 
 struct _nds_lnode {
-  struct nds_lnode *next;
-  struct nds_lnode *prev;
-  nds_element_t    *data;
+  nds_lnode_t next;
+  nds_lnode_t prev;
+  nds_element_t data;
 };
 
 extern nds_lnode_t nds_lnode_alloc() {
@@ -63,7 +63,7 @@ extern void nds_lnode_set_prev(nds_lnode_t node, nds_lnode_t prev) {
   node->prev = prev; 
 }
 
-extern void nds_lnode_set_data(nds_lnode_t node, ndes_element_t data) { 
+extern void nds_lnode_set_data(nds_lnode_t node, nds_element_t data) { 
   assert(node != NULL); 
 
   node->data = data;
