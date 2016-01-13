@@ -1,5 +1,5 @@
-/*#include <NDS/lnode.h>*/
-#include "../../include/NDS/lnode.h"
+#include <NDS/lnode.h>
+/*#include "../../include/NDS/lnode.h"*/
 #include <assert.h>
 
 struct _nds_lnode {
@@ -11,7 +11,7 @@ struct _nds_lnode {
 extern nds_lnode_t nds_lnode_alloc() {
   nds_lnode_t node;
   
-  node = (nds_lnode_t) malloc(sizeof(struct _nds_lnode));
+  node = (nds_lnode_t) calloc(1, sizeof(struct _nds_lnode));
 
   if (node == NULL) return NULL; 
 
@@ -24,7 +24,7 @@ extern nds_lnode_t nds_lnode_alloc() {
 
 extern nds_element_t nds_lnode_free(nds_lnode_t node) { 
   nds_element_t data;
-  
+
   assert(node != NULL);
 
   data = node->data;
