@@ -1,2 +1,2 @@
 language: c
-script: cmake && make && make test
+script: cmake . && make && make test
