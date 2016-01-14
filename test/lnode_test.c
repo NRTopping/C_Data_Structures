@@ -1,10 +1,6 @@
 #include <NDS/lnode.h>
-/*#include "../include/NDS/lnode.h"*/
 #include <unity_fixture.h>
 #include <unity.h>
-/*#include "Unity/extras/fixture/src/unity_fixture.h"*/
-/*#include "Unity/src/unity.h"*/
-#include <stdio.h>
 
 static nds_lnode_t node = NULL;
 static nds_lnode_t altNode = NULL;                   
