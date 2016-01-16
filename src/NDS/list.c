@@ -70,6 +70,8 @@ extern nds_list_t nds_list_alloc(const nds_alloc_func_t alloc_func,
   list->alloc_func = (alloc_func == NULL) ? default_alloc : alloc_func;
   list->free_func  = (free_func  == NULL) ? default_free  : free_func;
 
+  list->size = 0; 
+
   return list; 
 }
 
