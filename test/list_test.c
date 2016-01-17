@@ -78,6 +78,16 @@ TEST(NDSlist, listFlush_nonEmpty) {
   TEST_ASSERT_EQUAL_INT(0, nds_list_size(list));
   TEST_ASSERT_NULL(nds_list_get_head(list));
   TEST_ASSERT_NULL(nds_list_get_tail(list));
+
+  nds_list_insert_head(list, (nds_element_t) 1);
+  nds_list_insert_tail(list, (nds_element_t) 2);
+  TEST_ASSERT_EQUAL_INT(2, nds_list_size(list));
+  TEST_ASSERT_EQUAL_INT(1, nds_list_get_head(list));
+  TEST_ASSERT_EQUAL_INT(2, nds_list_get_tail(list));
+  nds_list_flush(list);
+  TEST_ASSERT_EQUAL_INT(0, nds_list_size(list));
+  TEST_ASSERT_NULL(nds_list_get_head(list));
+  TEST_ASSERT_NULL(nds_list_get_tail(list));
 }
 
 TEST_GROUP_RUNNER(NDSlist) { 
@@ -87,7 +97,7 @@ TEST_GROUP_RUNNER(NDSlist) {
   RUN_TEST_CASE(NDSlist, listGetInsertTail_empty);
   RUN_TEST_CASE(NDSlist, listGetInsertTail_nonEmpty);
   RUN_TEST_CASE(NDSlist, listFlush_empty);
-  /*RUN_TEST_CASE(NDSlist, listFlush_nonEmpty);*/
+  RUN_TEST_CASE(NDSlist, listFlush_nonEmpty);
 }
 
 static void RunAllTests() { 

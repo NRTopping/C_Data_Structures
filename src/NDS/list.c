@@ -98,6 +98,8 @@ extern void nds_list_flush(nds_list_t list) {
     nds_lnode_free(curr); 
     curr = next;
   }
+
+  nds_lnode_link(list->beg, list->end);
   list->size = 0;
 }
 
