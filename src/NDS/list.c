@@ -98,6 +98,7 @@ extern void nds_list_flush(nds_list_t list) {
     nds_lnode_free(curr); 
     curr = next;
   }
+  list->size = 0;
 }
 
 extern bool nds_list_is_empty(const nds_list_t list) { 
