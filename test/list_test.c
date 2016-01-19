@@ -90,6 +90,22 @@ TEST(NDSlist, listFlush_nonEmpty) {
   TEST_ASSERT_NULL(nds_list_get_tail(list));
 }
 
+static int int_compar(const nds_element_t e, void *value) { 
+  return (int) e - (int) value;
+}
+
+TEST(NDSlist, listGetMax_empty) { 
+  TEST_ASSERT_NULL(nds_list_get_max(list, int_compar)); 
+}
+
+TEST(NDSlist, listGetMax_nonEmpty) { 
+  nds_list_insert_head(list, (nds_element_t) 1);
+  nds_list_insert_head(list, (nds_element_t) 5); 
+  nds_list_insert_head(list, (nds_element_t) 2);
+
+  TEST_ASSERT_EQUAL_INT(5, (int) nds_list_get_max(list, int_compar));
+}
+
 TEST_GROUP_RUNNER(NDSlist) { 
   RUN_TEST_CASE(NDSlist, listAllocate);
   RUN_TEST_CASE(NDSlist, listGetInsertHead_empty);
@@ -98,6 +114,8 @@ TEST_GROUP_RUNNER(NDSlist) {
   RUN_TEST_CASE(NDSlist, listGetInsertTail_nonEmpty);
   RUN_TEST_CASE(NDSlist, listFlush_empty);
   RUN_TEST_CASE(NDSlist, listFlush_nonEmpty);
+  RUN_TEST_CASE(NDSlist, listGetMax_empty);
+  RUN_TEST_CASE(NDSlist, listGetMax_nonEmpty);
 }
 
 static void RunAllTests() { 
