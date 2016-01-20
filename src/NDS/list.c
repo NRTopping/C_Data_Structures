@@ -47,7 +47,7 @@ extern nds_list_t nds_list_alloc(const nds_alloc_func_t alloc_func,
     const nds_free_func_t free_func) { 
   nds_list_t list; 
   
-  list = (nds_list_t) malloc(sizeof(struct _nds_list));
+  list = (nds_list_t) calloc(1, sizeof(struct _nds_list));
 
   if (list == NULL) return NULL; 
 

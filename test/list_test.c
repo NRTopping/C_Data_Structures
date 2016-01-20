@@ -106,6 +106,18 @@ TEST(NDSlist, listGetMax_nonEmpty) {
   TEST_ASSERT_EQUAL_INT(5, (int) nds_list_get_max(list, int_compar));
 }
 
+TEST(NDSlist, listGetMin_empty) { 
+  TEST_ASSERT_NULL(nds_list_get_min(list, int_compar));
+}
+
+TEST(NDSlist, listGetMin_nonEmpty) { 
+  nds_list_insert_head(list, (nds_element_t) 5); 
+  nds_list_insert_head(list, (nds_element_t) 1);
+  nds_list_insert_head(list, (nds_element_t) 2);
+ 
+  TEST_ASSERT_EQUAL_INT(1, (int) nds_list_get_min(list, int_compar));
+}
+
 TEST_GROUP_RUNNER(NDSlist) { 
   RUN_TEST_CASE(NDSlist, listAllocate);
   RUN_TEST_CASE(NDSlist, listGetInsertHead_empty);
