@@ -7,6 +7,9 @@ project(NDS C)
 set(NDS_VERSION_MAJOR 1)
 set(NDS_VERSION_MINOR 0)
 
+# Flags
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c1x")
+
 enable_testing()
 
 # Add Header Files
