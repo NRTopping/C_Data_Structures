@@ -1,6 +1,7 @@
 #include <NDS/list.h>
 #include <unity_fixture.h>
 #include <unity.h>
+#include <stdio.h>
 
 static nds_list_t list = NULL;
 
@@ -128,6 +129,19 @@ TEST(NDSlist, listGetNth) {
   TEST_ASSERT_EQUAL_INT(3, (int) nds_list_get_nth(list, 2));
 }
 
+TEST(NDSlist, listInsertSorted) { 
+  nds_list_insert_sorted(list, int_compar, (nds_element_t) 2);
+  nds_list_insert_sorted(list, int_compar, (nds_element_t) 1);
+  nds_list_insert_sorted(list, int_compar, (nds_element_t) 3);
+  nds_list_insert_sorted(list, int_compar, (nds_element_t) 0);
+
+  TEST_ASSERT_EQUAL_INT(4, nds_list_size(list));
+
+  for (int i = 0; i < nds_list_size(list); i++) { 
+    TEST_ASSERT_EQUAL_INT(i, (int)nds_list_get_nth(list, i));
+  }
+}
+
 TEST_GROUP_RUNNER(NDSlist) { 
   RUN_TEST_CASE(NDSlist, listAllocate);
   RUN_TEST_CASE(NDSlist, listGetInsertHead_empty);
@@ -138,6 +152,8 @@ TEST_GROUP_RUNNER(NDSlist) {
   RUN_TEST_CASE(NDSlist, listFlush_nonEmpty);
   RUN_TEST_CASE(NDSlist, listGetMax_empty);
   RUN_TEST_CASE(NDSlist, listGetMax_nonEmpty);
+  RUN_TEST_CASE(NDSlist, listGetNth);
+  RUN_TEST_CASE(NDSlist, listInsertSorted);
 }
 
 static void RunAllTests() { 

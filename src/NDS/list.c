@@ -204,6 +204,7 @@ extern void nds_list_insert_sorted(const nds_list_t list,
   prev = nds_lnode_get_prev(curr);
   nds_lnode_link(prev, newNode);
   nds_lnode_link(newNode, curr);
+  list->size++;
 }
 
 extern nds_element_t nds_list_remove_head(const nds_list_t list) { 
