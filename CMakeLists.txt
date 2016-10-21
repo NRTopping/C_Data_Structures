@@ -9,6 +9,7 @@ set(NDS_VERSION_MINOR 0)
 
 # Flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c1x")
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1) # generate json compilation db
 
 enable_testing()
 
