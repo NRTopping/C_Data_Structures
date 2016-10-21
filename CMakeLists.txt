@@ -18,4 +18,4 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Add Source Files
 add_subdirectory(src/NDS)
-add_subdirectory(test)
+add_subdirectory(tst)
